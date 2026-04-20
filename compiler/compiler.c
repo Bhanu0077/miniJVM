@@ -20,20 +20,22 @@ int main(int argc, char *argv[])
     }
 
     char line[256];
+    char var[50];
+    char var1[50];
+    char text[100];
+    int val1, val2;
 
     while (fgets(line, sizeof(line), in))
     {
-        char var[50];
-        int val1, val2;
 
-        // Case: int a = 5;
+        // Case 1
         if (sscanf(line, "int %s = %d;", var, &val1) == 2)
         {
             fprintf(out, "PUSH %d\n", val1);
             fprintf(out, "STORE %s\n", var);
         }
 
-        // Case: int a = 2 + 3;
+        // Case 2
         else if (sscanf(line, "int %s = %d + %d;", var, &val1, &val2) == 3)
         {
             fprintf(out, "PUSH %d\n", val1);
@@ -42,29 +44,32 @@ int main(int argc, char *argv[])
             fprintf(out, "STORE %s\n", var);
         }
 
-        // Case: int b = a + 4;
-        else if (sscanf(line, "int %s = %[^+]+ %d;", var, var, &val2) == 3)
+        // Case 3
+        else if (sscanf(line, "int %s = %[^+]+ %d;", var, var1, &val2) == 3)
         {
-            char var1[50];
-            sscanf(line, "int %s = %[^+]+ %d;", var, var1, &val2);
-
             fprintf(out, "LOAD %s\n", var1);
             fprintf(out, "PUSH %d\n", val2);
             fprintf(out, "ADD\n");
             fprintf(out, "STORE %s\n", var);
         }
 
-        // Case: print(a);
+        // print("text")
+        else if (sscanf(line, "print(\"%[^\"]\");", text) == 1)
+        {
+            fprintf(out, "PRINT_STR %s\n", text);
+        }
+
+        // input(x)
+        else if (sscanf(line, "input(%[^)]);", var) == 1)
+        {
+            fprintf(out, "INPUT %s\n", var);
+        }
+
+        // print(a)
         else if (sscanf(line, "print(%[^)]);", var) == 1)
         {
             fprintf(out, "LOAD %s\n", var);
             fprintf(out, "PRINT\n");
         }
     }
-
-    fclose(in);
-    fclose(out);
-
-    printf("Compilation complete. Output: out.bytecode\n");
-    return 0;
 }

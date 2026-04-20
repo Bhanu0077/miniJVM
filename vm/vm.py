@@ -45,6 +45,14 @@ class MiniJVM:
                 elif instr == "PRINT":
                     print(self.stack.pop())
 
+                elif instr == "PRINT_STR":
+                    text = " ".join(parts[1:])
+                    print(text)
+
+                elif instr == "INPUT":
+                    value = int(input())
+                    self.variables[parts[1]] = value
+
 
 if __name__ == "__main__":
     vm = MiniJVM()

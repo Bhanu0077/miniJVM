@@ -1,8 +1,9 @@
-PUSH 2
-STORE a
-LOAD a 
-PUSH 4
+PRINT_STR Enter a number:
+INPUT x
+LOAD x 
+PUSH 5
 ADD
-STORE b
-LOAD b
+STORE y
+LOAD y
 PRINT
+PRINT_STR Finished

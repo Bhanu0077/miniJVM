@@ -1,3 +1,5 @@
-int a = 2 + 3;
-int b = a + 4;
-print(b);
+print("Enter a number:");
+input(x);
+int y = x + 5;
+print(y);
+print("Finished");
